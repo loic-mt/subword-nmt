@@ -59,10 +59,12 @@ def get_vocabulary(fobj, is_dict=False):
     for line in fobj:
         if is_dict:
             word, count = line.strip().split()
-            vocab[word] = int(count)
+            if not re.match(r'\_\_ent.*\_\_$', word):
+                vocab[word] = int(count)
         else:
             for word in line.split():
-                vocab[word] += 1
+                if not re.match(r'\_\_ent.*\_\_$', word):
+                    vocab[word] += 1
     return vocab
 
 def update_pair_statistics(pair, changed, stats, indices):
